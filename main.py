@@ -39,28 +39,13 @@ def discriminate(outputs):
     pred_classes = np.array(outputs['instances'].pred_classes)
     mask = np.isin(pred_classes, CLASSES)
     idx = np.nonzero(mask)
-    #pred_classes = pred_classes[mask]
-    # The draw_instance_predictions "pred_boxes", "pred_classes", "scores", "pred_masks"
-    pred_boxes = outputs['instances'].pred_boxes
-    pred_classes = outputs['instances'].pred_classes
-    pred_masks = outputs['instances'].pred_masks
-    scores = outputs['instances'].scores
-
+    
+    # Get Instance values as a dict and leave only the desired ones
     out_fields = outputs['instances'].get_fields()
-    out_fields['pred_boxes'] = pred_boxes[idx]
-    out_fields['pred_classes'] = pred_classes[idx]
-    out_fields['pred_masks'] = pred_masks[idx]
-    out_fields['scores'] = scores[idx]
+    for field in out_fields:
+        out_fields[field] = out_fields[field][idx]
 
-
-    #Anew = [{'boxes': pred[0]['boxes'][idxOfClass],'labels': pred[0]['labels'][idxOfClass],'masks': pred[0]['masks'][idxOfClass],'scores': pred[0]['scores'][idxOfClass]}]
-
-
-    #liss = [pred_class for pred_class in outputs['instances'].pred_classes in CLASSES else 0]
-
-    return outputs
-
-
+   return outputs
 
 
 def main():

@@ -104,21 +104,12 @@ def discriminate(outputs, classes_to_detect):
     # Get the indexes
     idx = np.nonzero(mask)
 
-    # Get the current Instance values
-    pred_boxes = outputs['instances'].pred_boxes
-    pred_classes = outputs['instances'].pred_classes
-    pred_masks = outputs['instances'].pred_masks
-    scores = outputs['instances'].scores
-
-    # Get them as a dictionary and leave only the desired ones with the indexes
+    # Get Instance values as a dict and leave only the desired ones
     out_fields = outputs['instances'].get_fields()
-    out_fields['pred_boxes'] = pred_boxes[idx]
-    out_fields['pred_classes'] = pred_classes[idx]
-    out_fields['pred_masks'] = pred_masks[idx]
-    out_fields['scores'] = scores[idx]
+    for field in out_fields:
+        out_fields[field] = out_fields[field][idx]
 
     return outputs
-
 
 
 def main():
